@@ -37,7 +37,7 @@ public class UsuarioService {
 
 	}
 
-	// token no momento do loguin que recenera o usuaria da pessoa
+	// token no momento do loguin que regenera o usuaria da pessoa
 	private String gerarToken(String usuario) {
 		return "Bearer " + jwtService.generateToken(usuario);
 	}
@@ -85,7 +85,7 @@ public class UsuarioService {
 		// autentica o usuario
 		Authentication authentication = authenticationManager.authenticate(credenciais);
 
-		// se a autenticação foi efetuada co sucesso
+		// se a autenticação foi efetuada com sucesso
 		if (authentication.isAuthenticated()) {
 
 			// Busca os dados do usuario
@@ -100,7 +100,7 @@ public class UsuarioService {
 				usuarioLogin.get().setToken(gerarToken(usuarioLogin.get().getUsuario()));
 				usuarioLogin.get().setSenha("");
 
-				// OObjetro retorna preenchido
+				// O Objeto retorna preenchido
 				return usuarioLogin;
 			}
 

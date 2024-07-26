@@ -38,7 +38,7 @@ public class BasicSecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
-	// provedor de autenticação
+	// provedor de autenticação // auteração parametros
 	@Bean
 	AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
