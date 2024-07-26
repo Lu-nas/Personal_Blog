@@ -15,31 +15,34 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 @Configuration
 public class SwaggerConfig {
 
-	@Bean
-    OpenAPI springBlogPessoalOpenAPI() {
+	// retorna uma nova instancia com os dados da documentação
+	@Bean 	// e indica que este objeto pode ser injetado em qualquer ponto da aplicação.
+    OpenAPI springPersonalBlogOpenAPI() {
         return new OpenAPI()
-            .info(new Info()
-                .title("Projeto Blog Pessoal")
-                .description("Projeto Blog Pessoal - Generation Brasil")
+            .info(new Info() //Insere as informações sobre a API
+                .title("Projeto Personal Blog ")
+                .description("Projeto Personal Blog  - Generation Brasil")
                 .version("v0.0.1")
                 .license(new License()
-                    .name("Generation Brasil")
-                    .url("https://brazil.generation.org/"))
+                    .name("Luana Silva")
+                    .url("https://github.com/Lu-nas/"))
                 .contact(new Contact()
-                    .name("Generation Brasil")
-                    .url("https://github.com/conteudoGeneration")
-                    .email("conteudogeneration@generation.org")))
+                    .name("Luana silva")
+                    .url("https://github.com/Lu-nas/Personal_Blog")
+                    .email("luanasilva.ss9497@gmail.com")))
             .externalDocs(new ExternalDocumentation()
                 .description("Github")
-                .url("https://github.com/conteudoGeneration/"));
+                .url("https://github.com/Lu-nas/Personal_Blog"));
     }
-
 
 	@Bean
 	OpenApiCustomizer customerGlobalHeaderOpenApiCustomiser() {
 
-		return openApi -> {
-			openApi.getPaths().values().forEach(pathItem -> pathItem.readOperations().forEach(operation -> {
+		//O Método acima, personaliza todas as mensagens HTTP Responses (Respostas das requisições) do Swagger
+		// Cria um primeiro looping que fará a leitura de todos os recursos (Paths) através do Método getPaths()
+		return openApi -> { 
+			openApi.getPaths().values().forEach(pathItem -> pathItem.readOperations()
+					.forEach(operation -> {
 
 				ApiResponses apiResponses = operation.getResponses();
 
@@ -54,8 +57,10 @@ public class SwaggerConfig {
 
 			}));
 		};
+		
 	}
 
+	//O Método createApiResponse() adiciona uma descrição (Mensagem) em cada Resposta HTTP.
 	private ApiResponse createApiResponse(String message) {
 
 		return new ApiResponse().description(message);
