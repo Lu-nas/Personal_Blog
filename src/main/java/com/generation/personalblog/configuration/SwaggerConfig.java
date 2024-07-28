@@ -12,7 +12,9 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 
+
 @Configuration
+
 public class SwaggerConfig {
 
 	// retorna uma nova instancia com os dados da documentação
@@ -20,7 +22,7 @@ public class SwaggerConfig {
     OpenAPI springPersonalBlogOpenAPI() {
         return new OpenAPI()
             .info(new Info() //Insere as informações sobre a API
-                .title("Projeto Personal Blog ")
+                .title("Projeto Personal Blog")
                 .description("Projeto Personal Blog  - Generation Brasil")
                 .version("v0.0.1")
                 .license(new License()
