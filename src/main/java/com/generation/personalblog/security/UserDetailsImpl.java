@@ -20,18 +20,24 @@ public class UserDetailsImpl implements UserDetails {
 		this.userName = user.getUsuario();
 		this.password = user.getSenha();
 	}
+	
 	public UserDetailsImpl() { }
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		
 		return authorities;
 	}
+	
 	@Override
 	public String getPassword() {
+		
 		return password;
 	}
+	
 	@Override
 	public String getUsername() {
+		
 		return userName;
 	}
 	
@@ -44,13 +50,15 @@ public class UserDetailsImpl implements UserDetails {
 	public boolean isAccountNonLocked() {
 		return true;
 	}
+	
 	@Override 
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
+	
 	@Override
-	public boolean isEnabled(){
+	public boolean isEnabled() {
 		return true;
 	}
+	
 }
-

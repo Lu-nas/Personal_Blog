@@ -3,7 +3,6 @@ package com.generation.personalblog.configuration;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -14,14 +13,12 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 
 @Configuration
-
-public class SwaggerConfig {
-
-	// retorna uma nova instancia com os dados da documentação
-	@Bean 	// e indica que este objeto pode ser injetado em qualquer ponto da aplicação.
+public class SwaggerConfig {					// retorna uma nova instancia com os dados da documentação
+	
+	@Bean 										// e indica que este objeto pode ser injetado em qualquer ponto da aplicação.
     OpenAPI springPersonalBlogOpenAPI() {
         return new OpenAPI()
-            .info(new Info() //Insere as informações sobre a API
+            .info(new Info() 					//Insere as informações sobre a API
                 .title("Projeto Personal Blog")
                 .description("Projeto Personal Blog  - Generation Brasil")
                 .version("v0.0.1")
@@ -36,7 +33,7 @@ public class SwaggerConfig {
                 .description("Github")
                 .url("https://github.com/Lu-nas/Personal_Blog"));
     }
-
+	
 	@Bean
 	OpenApiCustomizer customerGlobalHeaderOpenApiCustomiser() {
 

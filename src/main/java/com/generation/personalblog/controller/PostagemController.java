@@ -68,10 +68,14 @@ public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem){
 		if(temaRepository.existsById(postagem.getTema().getId()))
 	return ResponseEntity.status(HttpStatus.OK)
 					.body(postagemRepository.save(postagem));
+		
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema nao existe!", null);
+		
 	}
+	
 	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 }
+
 @ResponseStatus(HttpStatus.NO_CONTENT)
 @DeleteMapping("/{id}")
 public void delete(@PathVariable Long id) {

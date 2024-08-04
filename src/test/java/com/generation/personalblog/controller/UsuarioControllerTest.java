@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.generation.personalblog.model.Usuario;
 import com.generation.personalblog.repository.UsuarioRepository;
@@ -25,12 +23,8 @@ import com.generation.personalblog.service.UsuarioService;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@AutoConfigureMockMvc
 public class UsuarioControllerTest {
 
-	  @Autowired
-	    private MockMvc mockMvc;
-	
 	@Autowired
 	private TestRestTemplate testRestTemplate;
 
@@ -58,7 +52,7 @@ public class UsuarioControllerTest {
 		HttpEntity<Usuario> corpoRequisicao = new HttpEntity<Usuario>(new Usuario(0L, 
 			"Paulo Antunes", "paulo_antunes@email.com.br", "13465278", "-"));
 
-		// Para enviar a requisição, o será necessário passar 4 parâmetros
+		// Para enviar a requisição,será necessário passar 4 parâmetros
 		ResponseEntity<Usuario> corpoResposta = testRestTemplate
 			.exchange("/usuarios/cadastrar", HttpMethod.POST, corpoRequisicao, Usuario.class);
 

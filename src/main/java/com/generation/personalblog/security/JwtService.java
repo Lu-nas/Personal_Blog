@@ -1,12 +1,10 @@
 package com.generation.personalblog.security;
 
-
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import javax.crypto.SecretKey;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -20,11 +18,10 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtService {
 	
-	public static final String SECRT ="37a29a953661a702b2a4f6e6930df5d3bdbbc6f20c3228fa7b0281a1c9516b1a";
+	public static final String SECRET ="37a29a953661a702b2a4f6e6930df5d3bdbbc6f20c3228fa7b0281a1c9516b1a";
 
-	
-	private SecretKey getSignKey() {
-	byte[] keyBytes = Decoders.BASE64.decode(SECRT);
+	private Key getSignKey() {
+	byte[] keyBytes = Decoders.BASE64.decode(SECRET);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}	
 	
@@ -35,8 +32,8 @@ public class JwtService {
 				.parseClaimsJws(token)
 				.getBody();
 	}
-	// retorna os dados de acesso
-	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+	
+	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {			// retorna os dados de acesso
 		final Claims claims = extractAllClaims(token);
 		return claimsResolver.apply(claims);
 	}
@@ -45,24 +42,22 @@ public class JwtService {
 		return extractClaim(token, Claims::getSubject);
 	}
 	
+
 	public Date extractExpiration(String token) {
 		return extractClaim(token, Claims::getExpiration);
 	}
 	
-	// checa a data do token
-	private Boolean isTokenExpired(String token) {
+	private Boolean isTokenExpired(String token) {											// checa a data do token
 		return extractExpiration(token).before(new Date());
 	}
 	
-	// chegam simultanea
-	public Boolean validateToken(String token, UserDetails userDetails) {
+	public Boolean validateToken(String token, UserDetails userDetails) {					// chegam simultanea
 		final String username = extractUsername(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
-	 // tempo de duração do token 1h aparit do tempo que esta sendo criado
-	// junto com a assinatura do token linh68
-	private String createToken(Map<String,Object> claims, String userName) {
-		return Jwts.builder()
+	
+	private String createToken(Map<String, Object> claims, String userName) {
+		return Jwts.builder()													//duração do token 1h aparit do tempo que esta sendo criado
 					.setClaims(claims)
 					.setSubject(userName)
 					.setIssuedAt(new Date(System.currentTimeMillis()))
@@ -70,7 +65,7 @@ public class JwtService {
 					.signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
 	}
 	
-	public String generateToken(String userName) {
+	public String generateToken(String userName) {								//a assinatura do token 
 		Map<String, Object> claims = new HashMap<>();
 		return createToken(claims, userName);
 	}

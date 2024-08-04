@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.generation.personalblog.model.Tema;
 
-public interface TemaRepository extends JpaRepository<Tema,Long> {
+public interface TemaRepository extends JpaRepository<Tema, Long> {
 
 	   public List<Tema> findAllByDescricaoContainingIgnoreCase(@Param("descricao") String descricao);
 }

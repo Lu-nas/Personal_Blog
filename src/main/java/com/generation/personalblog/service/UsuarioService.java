@@ -25,44 +25,28 @@ public class UsuarioService {
 	@Autowired
 	private JwtService jwtService;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+	  @Autowired
+	    private AuthenticationManager authenticationManager;
 
-	// criptografar senha no ato do cadastro
-	private String criptografarSenha(String senha) {
+	
+	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {							// função de ultilização do usuario final
 
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-		return encoder.encode(senha);
-
-	}
-
-	// token no momento do loguin que regenera o usuaria da pessoa
-	private String gerarToken(String usuario) {
-		return "Bearer " + jwtService.generateToken(usuario);
-	}
-
-	// função de ultilização do usuario final
-	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
-
-		// verifica se os dados email ja exixte no banco d' dados
-		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
+		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())				// verifica se os dados email ja exixte no banco d' dados
 			return Optional.empty();
 
 		usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
 		return Optional.of(usuarioRepository.save(usuario));
 	}
-
-	// verifica id e para a atualização
-	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
+	
+	public Optional<Usuario> atualizarUsuario(Usuario usuario) {							// verifica id e para a atualização
 
 		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
 
 			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
 
-			if ((buscaUsuario.isPresent()) && (buscaUsuario.get().getId() != usuario.getId()))
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario já exixte!", null);
+			if ( (buscaUsuario.isPresent()) && ( buscaUsuario.get().getId() != usuario.getId()))
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario já existe!", null);
 
 			usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
@@ -74,40 +58,45 @@ public class UsuarioService {
 
 	}
 
-	// recebe e verifica os dados vindos da model login passando pelas validacoes
-	// criadas na camada de segurança
-	public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
-
-		// Gera o Objeto de autentivação
-		var credenciais = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(),
-				usuarioLogin.get().getSenha());
-
-		// autentica o usuario
+	// recebe e verifica os dados vindos da model login passando pelas validacoes criadas na camada de segurança
+public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
+        
+		var credenciais = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha());
+		
 		Authentication authentication = authenticationManager.authenticate(credenciais);
-
-		// se a autenticação foi efetuada com sucesso
+        
 		if (authentication.isAuthenticated()) {
 
-			// Busca os dados do usuario
 			Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
 
-			// se encontrado
 			if (usuario.isPresent()) {
-				// preencher o Objeto usuarioLoguin com os dados encontrados
-				usuarioLogin.get().setId(usuario.get().getId());
-				usuarioLogin.get().setNome(usuario.get().getNome());
-				usuarioLogin.get().setFoto(usuario.get().getFoto());
-				usuarioLogin.get().setToken(gerarToken(usuarioLogin.get().getUsuario()));
-				usuarioLogin.get().setSenha("");
 
-				// O Objeto retorna preenchido
+				usuarioLogin.get().setId(usuario.get().getId());
+                usuarioLogin.get().setNome(usuario.get().getNome());
+                usuarioLogin.get().setFoto(usuario.get().getFoto());
+                usuarioLogin.get().setToken(gerarToken(usuarioLogin.get().getUsuario()));
+                usuarioLogin.get().setSenha("");
+								
 				return usuarioLogin;
+			
 			}
 
-		}
+        }
 
 		return Optional.empty();
 
+	}
+
+	private String criptografarSenha(String senha) {											// criptografar senha no ato do cadastro
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		return encoder.encode(senha);
+
+	}
+
+	private String gerarToken(String usuario) {													// token no momento do loguin que regenera o usuaria da pessoa
+		return "Bearer " + jwtService.generateToken(usuario);
 	}
 
 }

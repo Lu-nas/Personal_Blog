@@ -28,7 +28,7 @@ public class Postagem {
 	 private String titulo;
 	
 	@NotBlank(message = "O atributo texto é Obrigatório!")
-	@Size(min = 10, max = 10000, message = "O atributo texto deve conter no mínimo 10 e no max 100 caracteres")
+	@Size(min = 10, max = 1000, message = "O atributo texto deve conter no mínimo 10 e no max 1000 caracteres")
 	 private String texto;
 	
 	@UpdateTimestamp
@@ -43,7 +43,7 @@ public class Postagem {
     private Usuario usuario;
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -51,7 +51,7 @@ public class Postagem {
 	}
 
 	public String getTitulo() {
-		return titulo;
+		return this. titulo;
 	}
 
 	public void setTitulo(String titulo) {
@@ -59,7 +59,7 @@ public class Postagem {
 	}
 
 	public String getTexto() {
-		return texto;
+		return this.texto;
 	}
 
 	public void setTexto(String texto) {
@@ -67,7 +67,7 @@ public class Postagem {
 	}
 
 	public LocalDateTime getData() {
-		return data;
+		return this.data;
 	}
 
 	public void setData(LocalDateTime data) {
@@ -75,7 +75,7 @@ public class Postagem {
 	}
 
 	public Tema getTema() {
-		return tema;
+		return this.tema;
 	}
 
 	public void setTema(Tema tema) {
@@ -83,13 +83,11 @@ public class Postagem {
 	}
 	
 	public Usuario getUsuario() {
-		return usuario;
+		return this.usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
-	
 	
 }
