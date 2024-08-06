@@ -23,43 +23,42 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 
 	@Autowired
-	private JwtService jwtService;
+    private JwtService jwtService;
 
-	  @Autowired
-	    private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	
-	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {							// função de ultilização do usuario final
+	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
 
-		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())				// verifica se os dados email ja exixte no banco d' dados
+		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
 			return Optional.empty();
 
 		usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
 		return Optional.of(usuarioRepository.save(usuario));
-	}
 	
-	public Optional<Usuario> atualizarUsuario(Usuario usuario) {							// verifica id e para a atualização
+	}
 
-		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
+	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
+		
+		if(usuarioRepository.findById(usuario.getId()).isPresent()) {
 
 			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
 
 			if ( (buscaUsuario.isPresent()) && ( buscaUsuario.get().getId() != usuario.getId()))
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario já existe!", null);
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
 
 			usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
 			return Optional.ofNullable(usuarioRepository.save(usuario));
-
+			
 		}
 
 		return Optional.empty();
+	
+	}	
 
-	}
-
-	// recebe e verifica os dados vindos da model login passando pelas validacoes criadas na camada de segurança
-public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
+	public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
         
 		var credenciais = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha());
 		
@@ -81,21 +80,21 @@ public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLo
 			
 			}
 
-        }
-
+        } 
+            
 		return Optional.empty();
 
-	}
+    }
 
-	private String criptografarSenha(String senha) {											// criptografar senha no ato do cadastro
+	private String criptografarSenha(String senha) {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+		
 		return encoder.encode(senha);
 
 	}
 
-	private String gerarToken(String usuario) {													// token no momento do loguin que regenera o usuaria da pessoa
+	private String gerarToken(String usuario) {
 		return "Bearer " + jwtService.generateToken(usuario);
 	}
 

@@ -28,18 +28,18 @@ public class BasicSecurityConfig {
 
 	@Bean											// acessa  e espera um criptografia dos dados internos
 	UserDetailsService userDetailsService() {
-		
-		return new UserDetailsServiceImpl();
-	}
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+        return new UserDetailsServiceImpl();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 	 @Bean
 	    AuthenticationProvider authenticationProvider() {								// provedor de autenticação // auteração parametros
-	        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		 DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 	        authenticationProvider.setUserDetailsService(userDetailsService());
 	        authenticationProvider.setPasswordEncoder(passwordEncoder());
 	        return authenticationProvider;
@@ -64,7 +64,7 @@ public class BasicSecurityConfig {
         		.csrf(csrf -> csrf.disable())
         		.cors(withDefaults());
 
-    	http
+	http
         .authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/usuarios/logar").permitAll()
                 .requestMatchers("/usuarios/cadastrar").permitAll()
@@ -74,9 +74,7 @@ public class BasicSecurityConfig {
         .authenticationProvider(authenticationProvider())
         .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
         .httpBasic(withDefaults());
-	    
-	
 
-	    return http.build();
+	return http.build();
 	}
 }
