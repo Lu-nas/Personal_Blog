@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.generation</groupId>
-	<artifactId>blogpessoal</artifactId>
+	<artifactId>personalblog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>personal_blog</name>
 	<description>Demo Project Personal Blogl</description>
